@@ -72,6 +72,17 @@ class SpaceRocks:
                 if asteroid.collides_with(self.spaceship):
                     self.spaceship = None ## i.e. ships blown up
                     break
+        #check if bullets coincide with original screen, if not in, remove        
+        for bullet in self.bullets[:]:
+            if not self.screen.get_rect().collidepoint(bullet.position):
+                self.bullets.remove(bullet)
+        #same as above, checking bullet and asteroid positions through collides with
+        for bullet in self.bullets[:]:
+            for asteroid in self.asteroids[:]:
+                if asteroid.collides_with(bullet):
+                    self.asteroids.remove(asteroid)
+                    self.bullets.remove(bullet)
+                    break
 
     ## Draw content to screen, here using background to draw space, objects
     def _draw(self):

@@ -1,5 +1,5 @@
 from pygame.math import Vector2
-from utils import load_sprite, wrap_position
+from utils import load_sprite, wrap_position, get_random_velocity
 from pygame.transform import rotozoom
 
 UP = Vector2(0, -1)
@@ -28,7 +28,7 @@ class GameObject:
 ## Space object inherited from gameobject
 class Spaceship(GameObject):
     MANEUVERABILITY = 3
-    ACCELERATION = 0.25
+    ACCELERATION = 0.1
     #init spaceship image, zero velocity. placeholder. 
     def __init__(self, position):
         # init vector direction of rotation
@@ -53,3 +53,9 @@ class Spaceship(GameObject):
     # create slowdown thruster method
     def slow(self):
         self.velocity -= self.direction * self.ACCELERATION
+
+## create asteroid class
+class Asteroid(GameObject):
+    def __init__(self, position):
+        # random velocity 
+        super().__init__(position, load_sprite("asteroid"), get_random_velocity(1, 3))

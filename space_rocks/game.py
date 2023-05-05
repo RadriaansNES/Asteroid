@@ -1,5 +1,5 @@
 import pygame
-from utils import load_sprite, get_random_position
+from utils import load_sprite, get_random_position, print_text
 from models import Spaceship, Asteroid
 
 class SpaceRocks:
@@ -12,6 +12,9 @@ class SpaceRocks:
         self.background = load_sprite("space", False)
         # method to set fps value
         self.clock = pygame.time.Clock()
+        # creates font
+        self.font = pygame.font.Font(None, 64)
+        self.message = ""
         # initialize gameobjects
         self.bullets = []
         self.spaceship = Spaceship((400, 300), self.bullets.append) # adding bullets 
@@ -72,6 +75,7 @@ class SpaceRocks:
             for asteroid in self.asteroids:
                 if asteroid.collides_with(self.spaceship):
                     self.spaceship = None ## i.e. ships blown up
+                    self.message = "You lost, loser!"
                     break
         #check if bullets coincide with original screen, if not in, remove        
         for bullet in self.bullets[:]:
@@ -85,6 +89,9 @@ class SpaceRocks:
                     self.bullets.remove(bullet)
                     asteroid.split()
                     break
+        # win condition on check of no asteroids, spaceship present
+        if not self.asteroids and self.spaceship:
+            self.message = "You survived Captain!"
 
     ## Draw content to screen, here using background to draw space, objects
     def _draw(self):
@@ -92,6 +99,11 @@ class SpaceRocks:
         #loop  for multiple objects, drawing
         for game_object in self._get_game_objects():
             game_object.draw(self.screen)
+        
+    #draw finish condition
+        if self.message:
+            print_text(self.screen, self.message, self.font)
+
         pygame.display.flip()
         # run 60fps
         self.clock.tick(60)

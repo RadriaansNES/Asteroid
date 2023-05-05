@@ -13,7 +13,8 @@ class SpaceRocks:
         # method to set fps value
         self.clock = pygame.time.Clock()
         # initialize gameobjects
-        self.spaceship = Spaceship((400, 300))
+        self.bullets = []
+        self.spaceship = Spaceship((400, 300), self.bullets.append) # adding bullets 
         # randomize, intialize asteroid positions, set min distance
         self.asteroids = []
         for _ in range(6):
@@ -41,6 +42,14 @@ class SpaceRocks:
             if event.type == pygame.QUIT or (
             event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE):
                 quit()
+            ## add input for space bar (bullets)
+            elif (
+                self.spaceship
+                and event.type == pygame.KEYDOWN
+                and event.key == pygame.K_SPACE
+            ):
+                self.spaceship.shoot()
+                
         # asign input to left and right keys
         if self.spaceship: #input handler check for prescense
             is_key_pressed = pygame.key.get_pressed()
@@ -76,7 +85,7 @@ class SpaceRocks:
     
     ## method to move/return game objects
     def _get_game_objects(self):
-        game_objects = [*self.asteroids]
+        game_objects = [*self.asteroids, *self.bullets]
 
         if self.spaceship:  #check for being present
             game_objects.append(self.spaceship) 

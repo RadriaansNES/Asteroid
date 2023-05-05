@@ -29,8 +29,10 @@ class GameObject:
 class Spaceship(GameObject):
     MANEUVERABILITY = 3
     ACCELERATION = 0.1
-    #init spaceship image, zero velocity. placeholder. 
-    def __init__(self, position):
+    BULLET_SPEED = 3
+    #init spaceship image, zero velocity. bullet callbacks
+    def __init__(self, position, create_bullet_callback):
+        self.create_bullet_callback = create_bullet_callback 
         # init vector direction of rotation
         self.direction = Vector2(UP)
         super().__init__(position, load_sprite("spaceship"), Vector2(0))
@@ -53,9 +55,19 @@ class Spaceship(GameObject):
     # create slowdown thruster method
     def slow(self):
         self.velocity -= self.direction * self.ACCELERATION
+    # create shoot method
+    def shoot(self):
+        bullet_velocity = self.direction * self.BULLET_SPEED + self.velocity
+        bullet = Bullet(self.position, bullet_velocity)
+        self.create_bullet_callback(bullet)
 
 ## create asteroid class
 class Asteroid(GameObject):
     def __init__(self, position):
         # random velocity 
         super().__init__(position, load_sprite("asteroid"), get_random_velocity(1, 3))
+
+## create bullet class
+class Bullet(GameObject):
+    def __init__(self, position, velocity):
+        super().__init__(position, load_sprite("bullet"), velocity)

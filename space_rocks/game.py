@@ -2,13 +2,13 @@ import pygame
 from utils import load_sprite
 
 class SpaceRocks:
-    ## Create class, initalize statements
+    ## Create class, initalize statements. Set display and background
     def __init__(self):
         self._init_pygame()
         self.screen = pygame.display.set_mode((800, 600))
         self.background = load_sprite("space", False)
 
-    ## Reg game loop
+    ## Reg game loop method
     def main_loop(self):
         while True:
             self._handle_input()
@@ -28,7 +28,8 @@ class SpaceRocks:
 
     def _process_game_logic(self):
         pass
-    ## Draw content to screen, here just a blank screen
+
+    ## Draw content to screen, here using background to draw space
     def _draw(self):
         self.screen.blit(self.background, (0, 0))
         pygame.display.flip()
